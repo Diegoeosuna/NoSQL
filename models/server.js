@@ -10,6 +10,7 @@ class Server {
         this.port = process.env.PORT || 3002;
         this.articlesPath = '/api/articles'
         this.ticketsPath = '/api/tickets'
+        this.usersPath = '/api/users'
         
         this.dataBaseConnection();
 
@@ -29,6 +30,8 @@ class Server {
     routes(){
         this.app.use(this.articlesPath, require('../routes/articles.routes'));
         this.app.use(this.ticketsPath, require('../routes/tickets.routes'));
+        this.app.use(this.usersPath, require('../routes/users.routes'));
+
     }
 
     listen(){

@@ -4,14 +4,14 @@ const Ticket = require('../models/tickets.models')
 
 const ticketGet = async(req = require, res = response) => {
     try {
-        const articuloDisp = {state:true};
+        const queryParam = {state:true};
         const { limite = 10 } = req.query;
-        const cantidadArticulos = await Ticket.coundDocuments();
-        const ticket = await Ticket.find(articuloDisp).limit(Number(limite));
+        const cantidadTickets = await Ticket.countDocuments();
+        const ticket = await Ticket.find(queryParam).populate("articulos", "usuario").limit(Number(limite));
         res.status(200).json({
-            total:cantidadArticulos,
+            total:cantidadTickets,
             ticket
-        })
+            })
     } catch (error) {
         res.status(500).json({
             message: 'Algo ocurrió cuando buscabas los tickets.',
@@ -22,8 +22,8 @@ const ticketGet = async(req = require, res = response) => {
 
 const ticketPost = async(req = require, res = response) => {
     try {
-        const { subtotal, IVA, total, articulos, usuario } = req.body
-        const data ={ subtotal, IVA, total, articulos, usuario }
+        const { subtotal, IVA, total, articulos, usuario, state } = req.body
+        const data ={ subtotal, IVA, total, articulos, usuario, state }
     
         const ticket = new Ticket(data)
         await ticket.save()
@@ -41,11 +41,11 @@ const ticketPost = async(req = require, res = response) => {
 
 const ticketPut = async(req = require, res) => {
     try {
-        const { id } = req.params;
-        const { subtotal, IVA, total, articulos, usuario }  = req.body;
-        const data = { subtotal, IVA, total, articulos, usuario  } 
+        const { id } = req.params
+        const { subtotal, IVA, total, articulos, usuario, state }  = req.body;
+        const data = { subtotal, IVA, total, articulos, usuario, state } 
 
-        const user = await Ticket.findByIdAndUpdate(id, data)
+        const ticket = await Ticket.findByIdAndUpdate(id, data)
         res.status(200).json({
             message: 'Ticket se ha actualizado.',
             ticket

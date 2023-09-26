@@ -1,7 +1,7 @@
 const { response, request } = require('express')
 
 //Model - Schema
-const User = require('../models/user.model')
+const User = require('../models/users.model')
 
 //Read
 const userGet = async(req = require, res = response) => {
@@ -28,8 +28,8 @@ const userGet = async(req = require, res = response) => {
 const userPost = async(req = require, res = response) => {
 
     try {
-        const { userName, email, phoneNumber, password, state, service } = req.body
-        const data ={userName, email, phoneNumber, password, state, service}
+        const { userName, email, phoneNumber, password, state } = req.body
+        const data ={userName, email, phoneNumber, password, state}
     
         const user = new User(data)
         await user.save()
@@ -53,8 +53,8 @@ const userPut = async(req = request, res) => {
   
     try {
         const { id } = req.params;
-        const { userName, email, phoneNumber, password, state, service } = req.body;
-        const data = { userName, email, phoneNumber, password, state, service}
+        const { userName, email, phoneNumber, password, state } = req.body;
+        const data = { userName, email, phoneNumber, password, state}
 
         const user = await User.findByIdAndUpdate(id, data)
 

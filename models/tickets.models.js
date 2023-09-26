@@ -3,15 +3,15 @@ const { Schema, model } = require('mongoose')
 const TicketSchema = new Schema({
     subtotal:{
         type: Number,
-        require: true
+        required: [true, 'El subtotal es requerido']
     },
     IVA:{
         type: Number,
-        require: true
+        required: [true, 'El IVA es requerido']
     },
     total:{
         type: Number,
-        require:true
+        required:[true, 'El total es requerido']
     },
     articulos:{
         type:Schema.Types.ObjectId,
@@ -22,6 +22,10 @@ const TicketSchema = new Schema({
         type:Schema.Types.ObjectId,
         ref:'User',
         required:[true, 'El artículo es requerido']
+    },
+    state:{
+        type:Boolean,
+        default:true
     }
 })
 
